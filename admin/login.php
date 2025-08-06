@@ -1,9 +1,22 @@
 <?php
+
+require_once "dbconnect.php"; // Include the database connection file
+
+if (isset($_SESSION)) {
+    session_start();
+}
+
 if (isset($_POST['btnLogin'])) //login request
 {
     $email = $_POST['email']; // name attribute value of form value
     $password = $_POST['password'];
-    $hashcode = "$2y$10\$xbu1MoWyj7AWLlOj7dJNAO/1NUW4nVfN9bhMPbnKVa3edIncAfz/6";
+    $sql = 'SELECT * FROM admin WHERE email = ?';
+    $stmt = $conn->prepare($sql); //prevent sql injection attack
+    $stmt->execute([$email]); // Assuming you want to fetch the user by email
+    $adminInfo = $stmt->fetch();
+    $hashcode = $adminInfo['password']; // Fetch the hashed password from the database
+
+    //$hashcode = "$2y$10\$xbu1MoWyj7AWLlOj7dJNAO/1NUW4nVfN9bhMPbnKVa3edIncAfz/6";
     if (password_verify($password, $hashcode)) // two arguments required plain text, hashcode
     {
         echo "login success";
