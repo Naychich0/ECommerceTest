@@ -1,6 +1,32 @@
 <?php
+require_once "dbconnect.php";
+if(!isset($_SESSION))
+{
+    session_start();
+}
 
-?>
+if(isset($_POST['btnAdd']))//checking wether submit button is clicked
+{
+    $catName = $_POST['catName'];
+    $description = $_POST['description'];
+    try{
+        $sql = "INSERT INTO category VALUES (?, ?, ?)";
+        $stmt = $conn->prepare($sql); //prevent sql injection attack
+        $status = $stmt->execute([null, $catName, $description]);
+        // $id = $conn->lastInsertId();
+        if($status){
+            $id = $conn->lastInsertId();
+            $message = "Category with id $id has been inserted";
+            $_SESSION["message"] = $message;
+            header("Location: viewInfo.php");
+            exit();
+        }
+    }catch(PDOException $e){
+        echo $e->getMessage();
+    }
+}
+
+?> 
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,10 +46,14 @@
         </div>
         <div class="row">
             <div class="col-md-6 mx-auto py-5">
-                <form action="insertCategory.php" method="post" class="form">
+                <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" class="form">
                     <div class="mb-3">
                         <label for="" class="form-label">Category Name</label>
                         <input type="text" class="form-control" name="catName">
+                    </div>
+                    <div class="mb-3">
+                        <label for="" class="form-label">Description</label>
+                        <textarea name="description" id="desc" class="form-control" placeholder="Plese write description here..."></textarea>
                     </div>
                     <div class="mb-3">
                         <button class="btn btn-primary rounded" name="btnAdd" type="submit">
