@@ -32,8 +32,11 @@ try{
             <?php require_once "navigation.php"; ?>
         </div>
         <div class="row">
-            <div class="col-md-2">
-
+            <div class="col-md-2 mx-auto py-5">
+                <div class="card ms-2">
+                    <a href="insertCategory.php" class="btn btn-outline-primary roundted mb-2">Insert Category</a>
+                    <a href="insertProduct.php" class="btn btn-outline-primary roundted mb-2">Insert Product</a>
+                </div>
             </div>
             <div class="col-md-10 mx-auto py-5">
                 <?php 
@@ -53,7 +56,7 @@ try{
                         }
                     }
                 ?>
-            </table>
+                </table>
             </div>
         </div>
     </div>

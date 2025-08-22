@@ -1,19 +1,50 @@
 <?php
 require_once "dbconnect.php"; // Include database connection file
+
+// Fetch categories
 try {
-    $sql = " select * from category"; // Fetch all categories
+    $sql = "SELECT * FROM category";
     $stmt = $conn->prepare($sql);
     $stmt->execute();
-    $categories = $stmt->fetchAll(); //multiple rows returned
+    $categories = $stmt->fetchAll();
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
 }
 
+// Handle form submission
 if (isset($_POST['insertBtn'])) {
-    echo "$_POST[pname]<br> $_POST[category]<br> $_POST[description]<br>
-    $_POST[sprice]<br>$_POST[quantity]<br>$_POST[bprice]<br>";
+    $productName = $_POST['pname'];
+    $productCategory = $_POST['category'];
+    $description = $_POST['description'];
+    $sellPrice = $_POST['sprice'];
+    $qty = $_POST['quantity'];
+    $buyPrice = $_POST['bprice'];
+
+    $productImage = $_FILES['pimg'];
+    $filePath = "productImages/" . $productImage['name'];
+
+    //move temp file into specified directory
+    try {
+        if (move_uploaded_file($productImage['tmp_name'], $filePath)) {
+
+            // id  product_name  cost  price  description  image_path  category  quantity
+            $sql = "insert into products (product_name,cost,price,description,img_path,category,quantity) 
+        values (?,?,?,?,?,?,?)";
+
+            $stmt = $conn->prepare($sql);
+            $flag = $stmt->execute([$productName, $buyPrice, $sellPrice, $description, $filePath, $productCategory, $qty]);
+
+            if ($flag) {
+                header("Location:viewInfo.php");
+            }
+        }
+    } catch (Exception $e) {
+        echo $e->getMessage();
+    }
 }
+
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -83,7 +114,7 @@ if (isset($_POST['insertBtn'])) {
 
                             <div class="mb-3">
                                 <label for="pimg" class="form-label">Product Image</label>
-                                <input type="file" class="form-control" name="pimag" id="pimg" required>
+                                <input type="file" class="form-control" name="pimg" id="pimg" required>
                             </div>
 
                             <div class="mb-3">
