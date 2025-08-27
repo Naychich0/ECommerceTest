@@ -23,7 +23,9 @@ if (isset($_POST['btnLogin'])) //login request
 
         if (password_verify($password, $hashcode)) // two arguments required plain text, hashcode
         {
+            $_SESSION['admin_login'] = true;
             $_SESSION['email'] = $email;
+            header("Location: viewInfo.php?show=products");
 
         } else {//correct email and incorrect password
             $errMsg = "Incorrect Password.";

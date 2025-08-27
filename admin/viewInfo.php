@@ -15,7 +15,19 @@ if(isset($_GET['show']) && $_GET['show'] == 'categories'){
         echo $e->getMessage();
     }
 }else if(isset($_GET['show']) && $_GET['show'] == 'products'){
-    echo "After insert product";
+    try{
+        $sql = "SELECT p.id, p.product_name, p.cost,p.price, p.description, p.img_path, c.cat_name 
+        as category, p.id catid, p.quantity 
+        FROM products p, category c 
+        WHERE p.category = c.id;";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        $products = $stmt->fetchAll();
+        // var_dump($products);
+    
+    }catch(PDOException $e){
+        echo $e->getMessage();
+    }
 }
 
 
@@ -48,7 +60,12 @@ if(isset($_GET['show']) && $_GET['show'] == 'categories'){
                 <?php 
                     if(isset($_SESSION["message"])){
                         echo "<p class='alert alert-success'>$_SESSION[message] </p>";
+                        unset($_SESSION["message"]);
+                    }else if(isset($_SESSION["productMessage"])){
+                        echo "<p class='alert alert-success'>$_SESSION[productMessage] </p>";
+                        unset($_SESSION["productMessage"]);
                     }
+
                 ?>
                 <table class="table table-striped">
                 <?php 
@@ -58,6 +75,21 @@ if(isset($_GET['show']) && $_GET['show'] == 'categories'){
                             <td>$category[id]</td>
                             <td>$category[cat_name]</td>
                             <td>$category[description]</td>
+                            </tr>";
+                        }
+                    }else if(isset($products)){
+                        foreach($products as $product){
+                            echo "<tr>
+                            <td>$product[id]</td>
+                            <td>$product[product_name]</td>
+                            <td>$product[cost]</td>
+                            <td>$product[price]</td>
+                            <td>$product[description]</td>
+                            <td>$product[category]</td>
+                            <td>$product[quantity]</td>
+                            <td>
+                                <img src = $product[img_path] style=width:75px;height=75px>
+                            </td>
                             </tr>";
                         }
                     }

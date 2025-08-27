@@ -35,6 +35,9 @@ if (isset($_POST['insertBtn'])) {
             $flag = $stmt->execute([$productName, $buyPrice, $sellPrice, $description, $filePath, $productCategory, $qty]);
 
             if ($flag) {
+                $productID = $conn->lastInsertId();
+                $message = "Product with id $productID has been inserted";
+                $_SESSION["message"] = $message;
                 header("Location:viewInfo.php?show=products");
             }
         }

@@ -25,3 +25,8 @@ CREATE TABLE products(
 ALTER TABLE products
 ADD FOREIGN KEY (category)
 REFERENCES category(id);
+
+
+SELECT p.id, p.product_name, p.cost,p.price, p.description,p.img_path, c.cat_name as category, p.id catid, p.quantity 
+FROM products p, category c 
+WHERE p.category = c.id;

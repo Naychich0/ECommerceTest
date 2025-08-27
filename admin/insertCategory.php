@@ -17,7 +17,7 @@ if(isset($_POST['btnAdd']))//checking wether submit button is clicked
         if($status){
             $id = $conn->lastInsertId();
             $message = "Category with id $id has been inserted";
-            $_SESSION["message"] = $message;
+            $_SESSION["productMessage"] = $message;
             header("Location: viewInfo.php?show=categories");
             exit();
         }
