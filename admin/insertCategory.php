@@ -18,7 +18,7 @@ if(isset($_POST['btnAdd']))//checking wether submit button is clicked
             $id = $conn->lastInsertId();
             $message = "Category with id $id has been inserted";
             $_SESSION["message"] = $message;
-            header("Location: viewInfo.php");
+            header("Location: viewInfo.php?show=categories");
             exit();
         }
     }catch(PDOException $e){

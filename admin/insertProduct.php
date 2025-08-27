@@ -35,7 +35,7 @@ if (isset($_POST['insertBtn'])) {
             $flag = $stmt->execute([$productName, $buyPrice, $sellPrice, $description, $filePath, $productCategory, $qty]);
 
             if ($flag) {
-                header("Location:viewInfo.php");
+                header("Location:viewInfo.php?show=products");
             }
         }
     } catch (Exception $e) {

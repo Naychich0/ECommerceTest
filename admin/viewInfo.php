@@ -4,15 +4,21 @@ if(!isset($_SESSION))
     session_start();
 }
 require_once "dbconnect.php";
-try{
-    $sql = "SELECT * FROM category";
-    $stmt = $conn->prepare($sql);
-    $stmt->execute();
-    $categories = $stmt->fetchAll();
-
-}catch(PDOExeption $e){
-    echo $e->getMessage();
+if(isset($_GET['show']) && $_GET['show'] == 'categories'){
+    try{
+        $sql = "SELECT * FROM category";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        $categories = $stmt->fetchAll();
+    
+    }catch(PDOException $e){
+        echo $e->getMessage();
+    }
+}else if(isset($_GET['show']) && $_GET['show'] == 'products'){
+    echo "After insert product";
 }
+
+
 ?>
 
 <!DOCTYPE html>
