@@ -37,8 +37,9 @@ if (isset($_POST['insertBtn'])) {
             if ($flag) {
                 $productID = $conn->lastInsertId();
                 $message = "Product with id $productID has been inserted";
-                $_SESSION["message"] = $message;
+                $_SESSION["productMessage"] = $message;
                 header("Location:viewInfo.php?show=products");
+                exit();
             }
         }
     } catch (Exception $e) {

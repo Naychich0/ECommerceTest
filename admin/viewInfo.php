@@ -51,17 +51,20 @@ if(isset($_GET['show']) && $_GET['show'] == 'categories'){
         </div>
         <div class="row">
             <div class="col-md-2 mx-auto py-5">
+                <?php if(isset($_SESSION['admin_login'])) {?>
                 <div class="card ms-2">
                     <a href="insertCategory.php" class="btn btn-outline-primary roundted mb-2">Insert Category</a>
                     <a href="insertProduct.php" class="btn btn-outline-primary roundted mb-2">Insert Product</a>
                 </div>
+                <?php } ?>
             </div>
             <div class="col-md-10 mx-auto py-5">
                 <?php 
                     if(isset($_SESSION["message"])){
                         echo "<p class='alert alert-success'>$_SESSION[message] </p>";
                         unset($_SESSION["message"]);
-                    }else if(isset($_SESSION["productMessage"])){
+                    }
+                    if(isset($_SESSION["productMessage"])){
                         echo "<p class='alert alert-success'>$_SESSION[productMessage] </p>";
                         unset($_SESSION["productMessage"]);
                     }
@@ -90,6 +93,14 @@ if(isset($_GET['show']) && $_GET['show'] == 'categories'){
                             <td>
                                 <img src = $product[img_path] style=width:75px;height=75px>
                             </td>
+                            <td>
+                                <a class='btn btn-primary btn-sm' href=editProduct.php?val=edit>Edit</a>
+                            </td>
+                            <td>
+                                <a class='btn btn-danger btn-sm' href=deleteProduct.php?val=del&id=$product[id]>Delete</a>
+                            </td>
+                            
+
                             </tr>";
                         }
                     }
